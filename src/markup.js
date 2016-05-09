@@ -433,10 +433,10 @@ Mark.pipes = {
         return (+num) % (+n);
     },
     divisible: function (num, n) {
-        return num && (+num % n) === 0 ? num : false;
+        return num == 0 || (num && (+num % n) === 0) ? num : false;
     },
     even: function (num) {
-        return num && (+num & 1) === 0 ? num : false;
+        return num == 0 || (num && (+num & 1) === 0) ? num : false;
     },
     odd: function (num) {
         return num && (+num & 1) === 1 ? num : false;
