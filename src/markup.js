@@ -112,7 +112,7 @@ var Mark = {
     _bridge: function (tpl, tkn) {
         tkn = tkn == "." ? "\\." : tkn.replace(/\$/g, "\\$");
 
-        var exp = "{{\\s*" + tkn + "([^/}]+\\w*)?}}|{{/" + tkn + "\\s*}}",
+        var exp = "\\{\\{\\s*" + tkn + "([^/}]+\\w*)?\\}\\}|\\{\\{/" + tkn + "\\s*\\}\\}",
             re = new RegExp(exp, "g"),
             tags = tpl.match(re) || [],
             t,
