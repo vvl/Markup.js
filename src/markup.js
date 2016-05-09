@@ -59,8 +59,14 @@ var Mark = {
             fn = parts.shift().trim();
 
             try {
-                // Run the function, e.g. add(123, 10) ...
-                result = Mark.pipes[fn].apply(null, [val].concat(parts));
+                if (typeof Mark.pipes[fn] === 'function') {
+					// if a pipe with that name is defined, call it
+					// Run the function, e.g. add(123, 10) ...
+					result = Mark.pipes[fn].apply(null, [val].concat(parts));
+				} else {
+					// otherwise just ignore that pipe and continue
+					result = val;
+				}
 
                 // ... then pipe again with remaining expressions.
                 val = this._pipe(result, expressions);
