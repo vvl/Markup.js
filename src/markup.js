@@ -460,7 +460,7 @@ Mark.pipes = {
         Mark.globals[key] = obj; return "";
     },
     log: function (obj) {
-        console.log(obj);
+        gs.log(obj, 'console.log');
         return obj;
     }
 };
