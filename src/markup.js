@@ -418,7 +418,15 @@ Mark.pipes = {
         return !!bool ? iffy : (elsy || "");
     },
     toggle: function (obj, csv1, csv2, str) {
-        return csv2.split(",")[csv1.match(/\w+/g).indexOf(obj + "")] || str;
+        var matches = csv1.match(/\w+/g);
+        var index = -1;
+        for (var i = 0; i < matches.length; i += 1) {
+            if (matches[i] == (obj + "")) {
+                index = i;
+                break;
+            }
+        }
+        return csv2.split(",")[index] || str;
     },
     sort: function (arr, prop) {
         var fn = function (a, b) {
