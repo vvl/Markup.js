@@ -29,7 +29,7 @@ var Mark = {
 
     // Get the value of a number or size of an array. This is a helper function for several pipes.
     _size: function (a) {
-        return a instanceof Array ? a.length : (a || 0);
+        return __safe_instanceof(a, Array) ? a.length : (a || 0);
     },
 
     // This object represents an iteration. It has an index and length.
@@ -81,7 +81,7 @@ var Mark = {
             j,
             opts;
 
-        if (result instanceof Array) {
+        if (__safe_instanceof(result, Array)) {
             result = "";
             j = ctx.length;
 
@@ -92,7 +92,7 @@ var Mark = {
                 result += child ? Mark.up(child, ctx[i], opts) : ctx[i];
             }
         }
-        else if (result instanceof Object) {
+        else if (__safe_instanceof(result, Object)) {
             result = Mark.up(child, ctx);
         }
 
@@ -248,7 +248,7 @@ Mark.up = function (template, context, options) {
 
         // Evaluating an included template.
         else if ((include = this.includes[prop])) {
-            if (include instanceof Function) {
+            if (__safe_instanceof(include, Function)) {
                 include = include();
             }
             result = this._pipe(Mark.up(include, context, options), filters);
@@ -292,7 +292,7 @@ Mark.up = function (template, context, options) {
         }
 
         // Evaluating an array, which might be a block expression.
-        else if (ctx instanceof Array) {
+        else if (__safe_instanceof(ctx, Array)) {
             result = this._eval(ctx, filters, child);
         }
 
@@ -307,7 +307,7 @@ Mark.up = function (template, context, options) {
         }
 
         // Evaluating special case: if the resulting context is actually an Array
-        if (result instanceof Array) {
+        if (__safe_instanceof(result, Array)) {
             result = this._eval(result, filters, child);
         }
 
@@ -480,4 +480,13 @@ else if (typeof define === "function" && define.amd) {
     define(function() {
         return Mark;
     });
+}
+
+// a workaround for the issue with ServiceNow Rhino runtime
+// it crashes when tries to evalate undefined instanceof SomeType
+function __safe_instanceof(obj, type) {
+  if (typeof obj === 'undefined' || typeof type === 'undefined') {
+    return false;
+  }
+  return obj instanceof type;
 }
