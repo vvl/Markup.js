@@ -285,7 +285,8 @@ Mark.up = function (template, context, options) {
             }
 
             // Get the actual context
-            while (ctx && j < prop.length) {
+            // Java objects in the Rhino JS runtime do not have an implicit conversion boolean
+            while ((ctx || (typeof ctx === 'object' && ctx != null)) && j < prop.length) {
                 ctx = ctx[prop[j++]];
             }
 
